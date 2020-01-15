@@ -1,40 +1,45 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Person from './Person/Person';
 
-class App extends Component {
+const app = props => {
+  const [ personsState, setPersonsState ] = useState(
+    {
+      persons: [
+        { name: 'Max', age: 28 },
+        { name: 'Dani', age: 30},
+        { name: 'Kószó', age: 30}
+      ]
+    }
+  );
 
-  state = {
-    persons: [
-      { name: 'Max', age: 28 },
-      { name: 'Dani', age: 30},
-      { name: 'Kószó', age: 30}
-    ]
-  }
+const [ otherValues, setOtherValues ] = useState('some other value');
 
-  switchNameHandler = () => {
+console.log(personsState, otherValues);
+
+const switchNameHandler = () => {
   //  console.log('CLicked');
   // DO NOT DO!!! this.state.persons[0].name = 'Deiiiii';
-  this.setState({persons: [
+  setPersonsState({persons: [
     { name: 'Max', age: 28 },
     { name: 'Dani', age: 30},
     { name: 'Tasi', age: 31}
   ]})
-  }
+  };
   
-  render() {
-    return (
-      <div className="App">
-        <h1>Hi! I'm React App!</h1>
-        <p>It's working</p>
-        <button onClick={this.switchNameHandler}>Switch name</button>
-        <Person name={this.state.persons[0].name} age={this.state.persons[0].age}>My Hobbies: Gaming</Person>
-        <Person name={this.state.persons[1].name} age={this.state.persons[1].age}/>
-        <Person name={this.state.persons[2].name} age={this.state.persons[2].age}/>
-      </div>
-    );
-  }
-  // return React.createElement('div', {className: "App"}, React.createElement('h1', null, 'Hi! I\'m React App!!!!'));
-}
+  // The old state won't be merged after this state manupilation. In the switched state the "oterValues: 'some other value'" will miss!!!!!!!!
 
-export default App;
+  return (
+    <div className="App">
+      <h1>Hi! I'm React App!</h1>
+      <p>It's working</p>
+      <button onClick={switchNameHandler}>Switch name</button>
+      <Person name={personsState.persons[0].name} age={personsState.persons[0].age}>My Hobbies: Gaming</Person>
+      <Person name={personsState.persons[1].name} age={personsState.persons[1].age}/>
+      <Person name={personsState.persons[2].name} age={personsState.persons[2].age}/>
+    </div>
+  );
+};  
+
+export default app;
+
