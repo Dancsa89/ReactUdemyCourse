@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import Validation from './Validation/Validation';
+import Char from './Char/Char';
+
 
 class App extends Component {
 
@@ -10,7 +13,8 @@ class App extends Component {
       {id: 2, name: 'Dani', age: 30 },
       {id: 3, name: 'Kószó', age: 30 }
     ],
-    showPersons: false
+    showPersons: false,
+    numberOfLetters: ''
   };
 
   deletePersonHandler = (personIndex) => {
@@ -19,6 +23,13 @@ class App extends Component {
     modifiedPersons.splice(personIndex, 1);
     this.setState({persons: modifiedPersons})
   };
+
+  deleterCharHandler = (index) => {
+    const userInput = this.state.numberOfLetters.split('');
+    userInput.splice(index, 1);
+    const updatedInput = userInput.join('');
+    this.setState({numberOfLetters: updatedInput});
+  }
 
   nameChangeHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -39,6 +50,10 @@ class App extends Component {
     })
   };
 
+  inputHandler = (event) => {
+      this.setState({numberOfLetters: event.target.value})
+    };
+
   togglePersonsHandler = () => {
     const doShow = this.state.showPersons
     this.setState({ showPersons: !doShow })
@@ -52,6 +67,10 @@ class App extends Component {
       padding: '8px',
       cursor: 'pointer'
     };
+
+    const charList = this.state.numberOfLetters.split('').map((ch, index) => {
+      return <Char character={ch} key={index} clicked={(index) => this.deleterCharHandler(index)}/>
+    })
 
     let persons = null;
 
@@ -76,6 +95,11 @@ class App extends Component {
         <p>It's working</p>
         <button style={style} onClick={this.togglePersonsHandler}>Switch view</button>
         {persons}
+        <br></br>
+        <p>Input field: </p><input type='text' onChange={this.inputHandler} value={this.state.numberOfLetters}></input>
+        <p>{this.state.numberOfLetters}</p>
+        <Validation inputLenght={this.state.numberOfLetters.length}/>
+        {charList}
       </div>
     );
   }
